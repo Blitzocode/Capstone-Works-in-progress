@@ -1,0 +1,10 @@
+RecordsOfPaymentTable (
+    paymentID, 
+    userID, 
+    serviceID,
+    amount, 
+    paymentMethod,
+    paymentRef, 
+    paymentDate,
+    status
+);

@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Chronos</title>
+    <link rel="icon" href="yellow.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="/assets/js_file/dashboard-admin.js"></script>
+    <link rel="stylesheet" href="/assets/style/dashboard-admin.css">
+    <base href="assets/image_file/">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="logo">
+            <img src="whitelogo.png" alt="Chronos Logo" class="logo-img">
+          </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <div class="nav-icon dashboard-icon"></div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="requests">
+                    <div class="nav-icon requests-icon"></div>
+                    <span>Requests</span>
+                </a>
+                <a href="#" class="nav-item" data-section="calendar">
+                    <div class="nav-icon calendar-icon"></div>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item" data-section="transactions">
+                    <div class="nav-icon transactions-icon"></div>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reports">
+                    <div class="nav-icon reports-icon"></div>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item" data-section="certificate-generator">
+                    <div class="nav-icon reports-icon"></div>
+                    <span>Certificates</span>
+                </a>
+            </nav>
+            
+            <div class="files-section">
+                <h2>Files</h2>
+                <div class="files-list">
+                    <a href="#" class="file-item" data-section="binyag">
+                        <span class="expand-icon">▶</span>
+                        <div class="folder-icon"></div>
+                        <span>Binyag</span>
+                    </a>
+                    <a href="#" class="file-item" data-section="kumpil">
+                        <span class="expand-icon">▶</span>
+                        <div class="folder-icon"></div>
+                        <span>Kumpil</span>
+                    </a>
+                </div>
+                <button class="create-folder-btn">
+                    <span class="plus-icon">+</span> Create folder
+                </button>
+            </div>
+            
+            <div class="bottom-nav">
+                <a href="#" class="nav-item" data-section="register">
+                    <div class="nav-icon register-icon"></div>
+                    <span>Register</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <div class="nav-icon settings-icon"></div>
+                    <span>Settings</span>
+                </a>
+                <a href="login.html" class="nav-item">
+                    <div class="nav-icon logout-icon"></div>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <header class="page-header">
+                    <h1 class="greeting">Good morning, Admin</h1>
+                    <h2 class="dashboard-title">Dashboard</h2>
+                </header>
+                
+                <div class="dashboard-grid">
+                    <!-- Top Row -->
+                    <div class="top-row">
+                        <!-- Completed Card -->
+                        <div class="card completed-card">
+                            <div class="card-header">
+                                <span class="card-label completed">COMPLETED</span>
+                                <span class="card-options">•</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-container">
+                                    <h2 class="stat-value" id="dashboard-completed">0</h2>
+                                    <p class="stat-label">Total Requests</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Revenue Card -->
+                        <div class="card revenue-card">
+                            <div class="card-header">
+                                <span class="card-label revenue">REVENUE</span>
+                                <span class="card-options">•</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="chart-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                        <rect x="5" y="25" width="6" height="10" fill="#4a7eff" rx="1"/>
+                                        <rect x="17" y="15" width="6" height="20" fill="#4a7eff" rx="1"/>
+                                        <rect x="29" y="5" width="6" height="30" fill="#4a7eff" rx="1"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-container">
+                                    <h2 class="stat-value" id="dashboard-revenue">₱0</h2>
+                                    <p class="stat-label">Total Revenue</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Events Card -->
+                        <div class="card events-card">
+                            <h3 class="events-title">Upcoming Events</h3>
+                            
+                            <div class="events-list" id="upcoming-events-list">
+                                <div class="event">
+                                    <div class="event-time">5:00 PM, FRI, 16 MAY 2025</div>
+                                    <div class="event-name">Kasal</div>
+                                    <div class="event-details">Check the details and ensure accuracy</div>
+                                </div>
+                                
+                                <div class="event">
+                                    <div class="event-time">10:00 AM, FRI, 16 MAY 2025</div>
+                                    <div class="event-name">Kasal</div>
+                                    <div class="event-details">Check the details and ensure accuracy</div>
+                                </div>
+                                
+                                <div class="event">
+                                    <div class="event-time">9:00 AM, SAT, 18 MAY 2025</div>
+                                    <div class="event-name">Binyag</div>
+                                    <div class="event-details">Check the details and ensure accuracy</div>
+                                </div>
+                                
+                                <div class="event">
+                                    <div class="event-time">1:00 PM, TUE, 20 MAY 2025</div>
+                                    <div class="event-name">Komunyon</div>
+                                    <div class="event-details">Check the details and ensure accuracy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Row -->
+                    <div class="bottom-row">
+                        <!-- Line Chart -->
+                        <div class="card chart-card">
+                            <div class="line-chart">
+                                <div class="chart-container">
+                                    <div class="y-axis">
+                                        <div class="y-label">120</div>
+                                        <div class="y-label">100</div>
+                                        <div class="y-label">80</div>
+                                        <div class="y-label">60</div>
+                                    </div>
+                                    <div class="chart-area">
+                                        <svg class="line-graph" viewBox="0 0 400 200" preserveAspectRatio="none">
+                                            <polyline
+                                                points="50,130 150,140 250,120 350,50"
+                                                fill="none"
+                                                stroke="#4a7eff"
+                                                stroke-width="3"
+                                            />
+                                            <circle cx="50" cy="130" r="5" fill="#4a7eff" />
+                                            <circle cx="150" cy="140" r="5" fill="#4a7eff" />
+                                            <circle cx="250" cy="120" r="5" fill="#4a7eff" />
+                                            <circle cx="350" cy="50" r="5" fill="#4a7eff" />
+                                        </svg>
+                                        <div class="x-axis">
+                                            <div class="x-label">January</div>
+                                            <div class="x-label">February</div>
+                                            <div class="x-label">March</div>
+                                            <div class="x-label">April</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pie Chart -->
+                        <div class="card pie-chart-card">
+                            <h3 class="chart-title">Month of May</h3>
+                            <div class="pie-chart">
+                                <svg width="200" height="200" viewBox="0 0 200 200">
+                                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#eee" stroke-width="40" />
+                                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#ff6b6b" stroke-width="40" stroke-dasharray="125.6 376.8" stroke-dashoffset="0" />
+                                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#feca57" stroke-width="40" stroke-dasharray="94.2 376.8" stroke-dashoffset="-125.6" />
+                                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#1dd1a1" stroke-width="40" stroke-dasharray="62.8 376.8" stroke-dashoffset="-219.8" />
+                                    <circle cx="100" cy="100" r="80" fill="transparent" stroke="#54a0ff" stroke-width="40" stroke-dasharray="94.2 376.8" stroke-dashoffset="-282.6" />
+                                </svg>
+                                <div class="legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color legend-kasal"></span>
+                                        <span class="legend-label">Kasal</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color legend-binyag"></span>
+                                        <span class="legend-label">Binyag</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color legend-kumpil"></span>
+                                        <span class="legend-label">Kumpil</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color legend-komunyon"></span>
+                                        <span class="legend-label">Komunyon</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Requests Section -->
+            <section id="requests" class="content-section">
+                <h2>Certificate Requests</h2>
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <input type="text" id="all-search" placeholder="Search by name or reference number...">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="all-filter-type">
+                            <option value="all">All Types</option>
+                            <option value="BAPTISMAL">Baptismal</option>
+                            <option value="KUMPIL">Confirmation</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="all-filter-status">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="paid">Paid</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <button class="btn refresh-btn" id="refresh-requests">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="requests-table-container">
+                    <table class="requests-table">
+                        <thead>
+                            <tr>
+                                <th>Ref #</th>
+                                <th>Date Requested</th>
+                                <th>Name</th>
+                                <th>Certificate Type</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Transaction ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-requests-table">
+                            <!-- Requests will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="content-section">
+                <h2>Transaction Management</h2>
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <input type="text" id="transaction-search" placeholder="Search by transaction ID, reference number, or customer name...">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="transaction-filter-status">
+                            <option value="all">All Status</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="FAILED">Failed</option>
+                            <option value="REFUNDED">Refunded</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="transaction-filter-method">
+                            <option value="all">All Payment Methods</option>
+                            <option value="GCash">GCash</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="transaction-filter-period">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                        </select>
+                    </div>
+                    <button class="btn refresh-btn" id="refresh-transactions">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn export-btn" id="export-transactions">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+
+                <div class="transaction-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-revenue">₱0.00</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-transactions">0</h3>
+                            <p>Total Transactions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="successful-transactions">0</h3>
+                            <p>Successful</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="failed-transactions">0</h3>
+                            <p>Failed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="transactions-table-container">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Reference #</th>
+                                <th>Date & Time</th>
+                                <th>Customer</th>
+                                <th>Certificate Type</th>
+                                <th>Payment Method</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-table">
+                            <!-- Transactions will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section id="calendar" class="content-section">
+                <h2>Calendar Management</h2>
+                <div class="calendar-container">
+                    <div class="calendar-controls">
+                        <div class="calendar-header">
+                            <button id="prev-month" class="btn"><i class="fas fa-chevron-left"></i></button>
+                            <h3 id="current-month-year">June 2025</h3>
+                            <button id="next-month" class="btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-actions">
+                            <button id="add-event-btn" class="btn generate-btn">
+                                <i class="fas fa-plus"></i> Add Event
+                            </button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-days">
+                            <div class="day-header">Sun</div>
+                            <div class="day-header">Mon</div>
+                            <div class="day-header">Tue</div>
+                            <div class="day-header">Wed</div>
+                            <div class="day-header">Thu</div>
+                            <div class="day-header">Fri</div>
+                            <div class="day-header">Sat</div>
+                        </div>
+                        <div id="calendar-dates" class="calendar-dates">
+                            <!-- Calendar dates will be populated here -->
+                        </div>
+                    </div>
+                    <div class="event-list">
+                        <h3>Events for <span id="selected-date">June 4, 2025</span></h3>
+                        <div id="events-for-day" class="events-for-day">
+                            <!-- Events for selected day will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificate Generator Section -->
+            <section id="certificate-generator" class="content-section">
+                <h2>Certificate Generator</h2>
+
+                <div class="generator-container">
+                    <div class="generator-form">
+                        <h3>Generate New Certificate</h3>
+
+                        <div class="form-group">
+                            <label for="cert-type">Certificate Type</label>
+                            <select id="cert-type" class="form-control">
+                                <option value="BAPTISMAL">Baptismal Certificate</option>
+                                <option value="KUMPIL">Confirmation Certificate</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-number">Certificate Number</label>
+                            <input type="text" id="cert-number" class="form-control" placeholder="e.g. 1560">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-name">Full Name</label>
+                            <input type="text" id="cert-name" class="form-control" placeholder="LAST NAME, FIRST NAME MIDDLE NAME">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-father">Father's Name</label>
+                            <input type="text" id="cert-father" class="form-control" placeholder="FATHER'S FULL NAME">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-mother">Mother's Name</label>
+                            <input type="text" id="cert-mother" class="form-control" placeholder="MOTHER'S FULL NAME">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-birthplace">Place of Birth</label>
+                            <input type="text" id="cert-birthplace" class="form-control" placeholder="CITY, PROVINCE">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-birthdate">Date of Birth</label>
+                            <input type="date" id="cert-birthdate" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-sacrament-date">Date of Sacrament</label>
+                            <input type="date" id="cert-sacrament-date" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-minister">Minister</label>
+                            <input type="text" id="cert-minister" class="form-control" placeholder="REV. FR. FULL NAME">
+                        </div>
+                        
+                        <div class="form-group" id="sponsors-group">
+                            <label for="cert-sponsors">Sponsors</label>
+                            <div class="sponsors-container">
+                                <input type="text" class="form-control sponsor-input" placeholder="SPONSOR 1">
+                                <input type="text" class="form-control sponsor-input" placeholder="SPONSOR 2">
+                            </div>
+                            <button type="button" class="btn add-sponsor-btn" id="add-sponsor">
+                                <i class="fas fa-plus"></i> Add Sponsor
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-register">Register Information</label>
+                            <input type="text" id="cert-register" class="form-control" placeholder="Book No., Page No., Line No.">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-purpose">Purpose</label>
+                            <select id="cert-purpose" class="form-control">
+                                <option value="Record/Reference">Record/Reference</option>
+                                <option value="School Requirement">School Requirement</option>
+                                <option value="Marriage Requirement">Marriage Requirement</option>
+                                <option value="Employment">Employment</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="other-purpose-group" style="display: none;">
+                            <label for="cert-other-purpose">Specify Purpose</label>
+                            <input type="text" id="cert-other-purpose" class="form-control" placeholder="Specify purpose">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-parish-priest">Parish Priest</label>
+                            <input type="text" id="cert-parish-priest" class="form-control" value="Rev. Fr. Memo D. Chua">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn preview-btn" id="preview-certificate">
+                                <i class="fas fa-eye"></i> Preview Certificate
+                            </button>
+                            <button type="button" class="btn generate-btn" id="generate-certificate">
+                                <i class="fas fa-file-pdf"></i> Generate PDF
+                            </button>
+                            <button type="button" class="btn print-btn" id="print-certificate">
+                                <i class="fas fa-print"></i> Print Certificate
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="certificate-preview">
+                        <h3>Certificate Preview</h3>
+                        <div class="preview-container">
+                            <div id="certificate-template" class="certificate">
+                                <!-- Certificate Header -->
+                                <div class="certificate-header">
+                                    <div class="parish-logo">
+                                        <img src="parish-logo.png" alt="Parish Logo" crossorigin="anonymous">
+                                    </div>
+                                    <div class="certificate-title">
+                                        <h2 id="preview-title">Baptismal Certificate</h2>
+                                        <h3>Divina Pastora Parish</h3>
+                                        <p>Brgy. Tambo, Lipa City, Batangass</p>
+                                    </div>
+                                    <div class="certificate-number">
+                                        <p>No. <span id="preview-number">1560</span></p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Certificate Body -->
+                                <div class="certificate-body">
+                                    <p class="certificate-intro">This is to certify that</p>
+                                    
+                                    <p class="certificate-name" id="preview-name">CARLOS NICOLAI BENITO</p>
+                                    
+                                    <p class="certificate-parents">
+                                        child of <span id="preview-father">MARIO BENITO</span><br>
+                                        and <span id="preview-mother">PETRA LIBANG</span>
+                                    </p>
+                                    
+                                    <p class="certificate-birth">
+                                        Born in <span id="preview-birthplace">STGH, STO. TOMAS, BATANGAS</span><br>
+                                        on the <span id="preview-birthdate">2nd day of February, 2004</span>
+                                    </p>
+                                    
+                                    <p class="certificate-received">has received</p>
+                                    
+                                    <p class="certificate-sacrament" id="preview-sacrament">The Holy Sacrament of Baptism</p>
+                                    
+                                    <p class="certificate-rite">according to the rite of the Roman Catholic Church</p>
+                                    
+                                    <p class="certificate-date">
+                                        on the <span id="preview-sacrament-date">7th day of March, 2004</span><br>
+                                        By the <span id="preview-minister">Rev. FR. ROMEO BARRION</span>
+                                    </p>
+                                    
+                                    <p class="certificate-sponsors" id="preview-sponsors-text">
+                                        The sponsors being <span id="preview-sponsors">FELIX GONZALES and MARIE AGUINAGA</span>
+                                    </p>
+                                    
+                                    <p class="certificate-register">
+                                        As appears on the <span id="preview-register-type">Baptismal</span> Register 
+                                        <span id="preview-register">No. 53 Page 162 Line 3</span> of this church.
+                                    </p>
+                                </div>
+                                
+                                <!-- Certificate Footer with Signature and Seal -->
+                                <div class="certificate-footer">
+                                    <div class="certificate-issue">
+                                        <p>Date Issued: <span id="preview-issue-date">Jun. 4, 2025</span></p>
+                                        <p>Purpose: <span id="preview-purpose">Record/Reference</span></p>
+                                    </div>
+                                    
+                                    <div class="certificate-signature-section">
+                                        <div class="signature-container">
+                                            <img src="signature.png" alt="Parish Priest Signature" class="signature-image" crossorigin="anonymous">
+                                        </div>
+                                        <div class="signature-line"></div>
+                                        <p class="priest-name" id="preview-parish-priest">Rev. Fr. Memo D. Chua</p>
+                                        <p class="priest-title">Parish Priest</p>
+                                    </div>
+                                    
+                                    <div class="certificate-seal-container">
+                                        <img src="parish-seal.png" alt="Parish Seal" class="seal-image" crossorigin="anonymous">
+                                    </div>
+                                </div>
+                                
+                                <!-- Watermark -->
+                                <div class="certificate-watermark">
+                                    <img src="parish-logo.png" alt="Watermark" crossorigin="anonymous">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other sections remain the same -->
+            <section id="reports" class="content-section">
+                                <h2>Reports</h2>
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <input type="text" id="all-search" placeholder="Search by name or reference number...">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="all-filter-type">
+                            <option value="all">All Types</option>
+                            <option value="BAPTISMAL">Baptismal</option>
+                            <option value="KUMPIL">Confirmation</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="all-filter-status">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="paid">Paid</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <button class="btn refresh-btn" id="refresh-requests">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="requests-table-container">
+                    <table class="requests-table">
+                        <thead>
+                            <tr>
+                                <th>Ref #</th>
+                                <th>Date Requested</th>
+                                <th>Name</th>
+                                <th>Certificate Type</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Transaction ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-requests-table2">
+                            <!-- Requests will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="binyag" class="content-section">
+                <h2>Binyag Files</h2>
+                <div class="files-management">
+                    <div class="files-header">
+                        <h3>Document Management</h3>
+                        <div class="files-actions">
+                            <button class="btn generate-btn" id="upload-document">
+                                <i class="fas fa-upload"></i> Upload Document
+                            </button>
+                            <button class="btn create-folder-btn" id="create-subfolder">
+                                <i class="fas fa-folder-plus"></i> Create Subfolder
+                            </button>
+                        </div>
+                    </div>
+                    <div class="files-grid">
+                        <div class="file-card">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <h4>Baptismal Records 2024</h4>
+                                <p>PDF Document • 2.3 MB</p>
+                                <span class="file-date">Modified: Dec 15, 2024</span>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn print-btn"><i class="fas fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="kumpil" class="content-section">
+                <h2>Kumpil Files</h2>
+                <div class="files-management">
+                    <div class="files-header">
+                        <h3>Document Management</h3>
+                        <div class="files-actions">
+                            <button class="btn generate-btn" id="upload-document-kumpil">
+                                <i class="fas fa-upload"></i> Upload Document
+                            </button>
+                            <button class="btn create-folder-btn" id="create-subfolder-kumpil">
+                                <i class="fas fa-folder-plus"></i> Create Subfolder
+                            </button>
+                        </div>
+                    </div>
+                    <div class="files-grid">
+                        <div class="file-card">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <h4>Confirmation Records 2024</h4>
+                                <p>PDF Document • 1.8 MB</p>
+                                <span class="file-date">Modified: Dec 10, 2024</span>
+                            </div>
+                            <div class="file-actions">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn print-btn"><i class="fas fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="register" class="content-section">
+                <h2>Register</h2>
+                <p>Registration content will appear here.</p>
+            </section>
+
+            <section id="settings" class="content-section">
+                <h2>System Settings</h2>
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3>Parish Information</h3>
+                        <div class="form-group">
+                            <label for="parish-name">Parish Name</label>
+                            <input type="text" id="parish-name" class="form-control" value="Divina Pastora Parish">
+                        </div>
+                        <div class="form-group">
+                            <label for="parish-address">Parish Address</label>
+                            <textarea id="parish-address" class="form-control">Brgy. Tambo, Lipa City, Batangas</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3>Certificate Settings</h3>
+                        <div class="form-group">
+                            <label for="parish-priest">Parish Priest Name</label>
+                            <input type="text" id="parish-priest" class="form-control" value="Rev. Fr. Memo D. Chua">
+                        </div>
+                        <div class="form-group">
+                            <label for="watermark-opacity">Watermark Opacity</label>
+                            <input type="range" id="watermark-opacity" min="0.1" max="0.5" step="0.05" value="0.2">
+                            <span id="opacity-value">20%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3>Image Assets</h3>
+                        <div class="form-group">
+                            <label for="parish-logo-upload">Parish Logo</label>
+                            <input type="file" id="parish-logo-upload" accept="image/*">
+                            <div class="image-preview">
+                                <img src="parish-logo.png" alt="Parish Logo" id="parish-logo-preview">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="parish-seal-upload">Parish Seal</label>
+                            <input type="file" id="parish-seal-upload" accept="image/*">
+                            <div class="image-preview">
+                                <img src="parish-seal.png" alt="Parish Seal" id="parish-seal-preview">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="signature-upload">Parish Priest Signature</label>
+                            <input type="file" id="signature-upload" accept="image/*">
+                            <div class="image-preview">
+                                <img src="signature.png" alt="Signature" id="signature-preview">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-actions">
+                    <button class="btn save-settings-btn">Save All Settings</button>
+                    <button class="btn reset-settings-btn">Reset to Defaults</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Transaction Details Modal -->
+    <div class="modal" id="transaction-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Transaction Details</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="transaction-details">
+                    <div class="detail-section">
+                        <h4>Transaction Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Transaction ID:</div>
+                            <div class="detail-value" id="modal-transaction-id">GC12345678</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Reference Number:</div>
+                            <div class="detail-value" id="modal-transaction-ref">DP-230615-1234</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Payment Date:</div>
+                            <div class="detail-value" id="modal-payment-date">June 15, 2023 10:30 AM</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Payment Method:</div>
+                            <div class="detail-value" id="modal-payment-method">GCash</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Status:</div>
+                            <div class="detail-value" id="modal-transaction-status">COMPLETED</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Authorization Code:</div>
+                            <div class="detail-value" id="modal-auth-code">AUTH12345678</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Receipt Number:</div>
+                            <div class="detail-value" id="modal-receipt-number">RCP123456</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Customer Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Customer Name:</div>
+                            <div class="detail-value" id="modal-customer-name">DELA CRUZ, JUAN SANTOS</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Email:</div>
+                            <div class="detail-value" id="modal-customer-email">juan.delacruz@example.com</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Mobile Number:</div>
+                            <div class="detail-value" id="modal-customer-mobile">09123456789</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Certificate Type:</div>
+                            <div class="detail-value" id="modal-certificate-type">Baptismal Certificate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Payment Breakdown</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Processing Fee:</div>
+                            <div class="detail-value" id="modal-processing-fee">₱100.00</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Delivery Fee:</div>
+                            <div class="detail-value" id="modal-delivery-fee">₱0.00</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Total Amount:</div>
+                            <div class="detail-value" id="modal-total-amount">₱100.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section" id="modal-gcash-details" style="display: none;">
+                        <h4>GCash Details</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">GCash Number:</div>
+                            <div class="detail-value" id="modal-gcash-number">09123456789</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Additional Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Payment Gateway:</div>
+                            <div class="detail-value" id="modal-payment-gateway">GCash</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Notes:</div>
+                            <div class="detail-value" id="modal-transaction-notes">Payment for Baptismal Certificate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn refund-btn" id="modal-refund-btn" style="display: none;">Process Refund</button>
+                <button class="btn print-receipt-btn" id="modal-print-receipt-btn">Print Receipt</button>
+                <button class="btn close-btn" id="modal-transaction-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="modal" id="event-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="event-modal-title">Add New Event</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="event-title">Event Title</label>
+                    <input type="text" id="event-title" class="form-control" placeholder="Enter event title">
+                </div>
+                <div class="form-group">
+                    <label for="event-type">Event Type</label>
+                    <select id="event-type" class="form-control">
+                        <option value="BAPTISM">Binyag (Baptism)</option>
+                        <option value="CONFIRMATION">Kumpil (Confirmation)</option>
+                        <option value="COMMUNION">Unang Komunyon (First Communion)</option>
+                        <option value="WEDDING">Kasal (Wedding)</option>
+                        <option value="FUNERAL">Libing (Funeral)</option>
+                        <option value="INTENTION">Intensyon sa Misa (Mass Intention)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="event-date">Date</label>
+                    <input type="date" id="event-date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="event-time">Time</label>
+                    <input type="time" id="event-time" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="event-details">Details</label>
+                    <textarea id="event-details" class="form-control" rows="3" placeholder="Enter event details"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="event-contact">Contact Person</label>
+                    <input type="text" id="event-contact" class="form-control" placeholder="Enter contact person">
+                </div>
+                <div class="form-group">
+                    <label for="event-phone">Contact Number</label>
+                    <input type="tel" id="event-phone" class="form-control" placeholder="Enter contact number">
+                </div>
+                <div class="form-group">
+                    <label for="generate-certificate">Generate Certificate After Event</label>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="generate-certificate">
+                        <label for="generate-certificate">Yes, generate certificate</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="delete-event-btn" style="display: none;">Delete Event</button>
+                <button class="btn close-btn" id="cancel-event-btn">Cancel</button>
+                <button class="btn save-btn" id="save-event-btn">Save Event</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Details Modal -->
+    <div class="modal" id="request-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Request Details</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="request-details">
+                    <div class="detail-section">
+                        <h4>Request Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Reference Number:</div>
+                            <div class="detail-value" id="modal-ref-number">DP-230615-1234</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Date Requested:</div>
+                            <div class="detail-value" id="modal-date-requested">June 15, 2023</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Certificate Type:</div>
+                            <div class="detail-value" id="modal-cert-type">Baptismal Certificate</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Request Type:</div>
+                            <div class="detail-value" id="modal-request-type">New Certificate</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Number of Copies:</div>
+                            <div class="detail-value" id="modal-copies">1</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Purpose:</div>
+                            <div class="detail-value" id="modal-purpose">School Requirement</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Transaction ID:</div>
+                            <div class="detail-value" id="modal-request-transaction-id">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Personal Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Full Name:</div>
+                            <div class="detail-value" id="modal-name">DELA CRUZ, JUAN SANTOS</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Date of Birth:</div>
+                            <div class="detail-value" id="modal-dob">January 15, 2000</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Place of Birth:</div>
+                            <div class="detail-value" id="modal-pob">TANAUAN CITY, BATANGAS</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Sex:</div>
+                            <div class="detail-value" id="modal-sex">MALE</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Father's Name:</div>
+                            <div class="detail-value" id="modal-father">DELA CRUZ, PEDRO REYES</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Mother's Name:</div>
+                            <div class="detail-value" id="modal-mother">SANTOS, MARIA LUNA</div>
+                        </div>
+                        <div class="detail-row" id="modal-sponsor-row" style="display: none;">
+                            <div class="detail-label">Sponsor:</div>
+                            <div class="detail-value" id="modal-sponsor">GONZALES, FELIX CRUZ</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Sacrament Date:</div>
+                            <div class="detail-value" id="modal-sacrament-date">March 15, 2000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Contact Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Mobile Number:</div>
+                            <div class="detail-value" id="modal-mobile">09123456789</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Email Address:</div>
+                            <div class="detail-value" id="modal-email">juan.delacruz@example.com</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Relationship:</div>
+                            <div class="detail-value" id="modal-relationship">SELF</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Delivery Information</h4>
+                        <div class="detail-row">
+                            <div class="detail-label">Delivery Method:</div>
+                            <div class="detail-value" id="modal-delivery-method">Pickup</div>
+                        </div>
+                        <div id="modal-pickup-info">
+                            <div class="detail-row">
+                                <div class="detail-label">Pickup Date:</div>
+                                <div class="detail-value" id="modal-pickup-date">June 20, 2023</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Contact Number:</div>
+                                <div class="detail-value" id="modal-pickup-contact">09123456789</div>
+                            </div>
+                        </div>
+                        <div id="modal-delivery-info" style="display: none;">
+                            <div class="detail-row">
+                                <div class="detail-label">Delivery Address:</div>
+                                <div class="detail-value" id="modal-delivery-address">123 Main St., Brgy. 1, Tanauan City, Batangas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn approve-btn" id="modal-approve-btn">Approve Request</button>
+                <button class="btn reject-btn" id="modal-reject-btn">Reject Request</button>
+                <button class="btn generate-cert-btn" id="modal-generate-btn">Generate Certificate</button>
+                <button class="btn close-btn" id="modal-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
