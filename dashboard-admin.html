@@ -46,6 +46,10 @@
                     <div class="nav-icon reports-icon"></div>
                     <span>Certificates</span>
                 </a>
+                <a href="#" class="nav-item" data-section="Walkin">
+                    <div class="nav-icon dashboard-icon"></div>
+                    <span>Walkin</span>
+                </a>
             </nav>
             
             <div class="files-section">
@@ -624,11 +628,9 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Other sections remain the same -->
-            <section id="reports" class="content-section">
-                                <h2>Reports</h2>
-                <div class="filter-controls">
+ <section id="Walkin" class="content-section">
+<h2>Walkin</h2>
+<div class="filter-controls">
                     <div class="search-box">
                         <input type="text" id="all-search" placeholder="Search by name or reference number...">
                         <button class="search-btn"><i class="fas fa-search"></i></button>
@@ -659,21 +661,26 @@
                     <table class="requests-table">
                         <thead>
                             <tr>
-                                <th>Ref #</th>
-                                <th>Date Requested</th>
-                                <th>Name</th>
-                                <th>Certificate Type</th>
-                                <th>Purpose</th>
-                                <th>Status</th>
-                                <th>Transaction ID</th>
-                                <th>Actions</th>
+                                <th>Record ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Birth Date</th>
+                                <th>Birth Place</th>
+                                <th>Sacrament Date</th>
+                                <th>Place of Sacrament</th>
+                                <th>Minister</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody id="all-requests-table2">
+                        <tbody id="all-recordstable">
                             <!-- Requests will be populated here -->
                         </tbody>
                     </table>
                 </div>
+ </section>
+            <!-- Other sections remain the same -->
+            <section id="reports" class="content-section">
+                                <h2>Reports</h2>
             </section>
 
             <section id="binyag" class="content-section">
@@ -744,7 +751,116 @@
 
             <section id="register" class="content-section">
                 <h2>Register</h2>
-                <p>Registration content will appear here.</p>
+                <div class="generator-container">
+    <form method="POST" action="/assets/php_file/registerWalkIn.php">
+                    <div class="generator-form">
+                        <h3>Registration for walkin</h3>
+  
+                        <div class="form-group">
+                            <label for="cert-type">Certificate Type</label>
+                            <select id="cert-type" name="Confirmation" class="form-control">
+                                <option value="BAPTISMAL">Baptismal Certificate</option>
+                                <option value="KUMPIL">Confirmation Certificate</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cert-number">Place of Sacrament</label>
+                            <input type="text" id="cert-number" name="Placesac" class="form-control" placeholder="BIRTH OF SACRAMENT">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="cert-name" name="Firstn" class="form-control" placeholder="FIRST NAME">
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name">Middle Name</label>
+                            <input type="text" id="cert-name" name="Middlen" class="form-control" placeholder="MIDDLE NAME">
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="cert-name" name="Lastn" class="form-control" placeholder="LAST NAME">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="cert-father">First Father's Name</label>
+                            <input type="text" id="cert-father" name="Fathername" class="form-control" placeholder="FATHER'S FIRST NAME">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-father">Middle Father's Name</label>
+                            <input type="text" id="cert-father" name="Fathnamemiddle" class="form-control" placeholder="FATHER'S MIDDLE NAME">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-father">Last Father's Name</label>
+                            <input type="text" id="cert-father" name="Fathnamelast" class="form-control" placeholder="FATHER'S LAST NAME">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cert-mother">First Mother's Name</label>
+                            <input type="text" id="cert-mother" name="Mothername" class="form-control" placeholder="MOTHER'S FIRST NAME">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-mother">Middle Mother's Name</label>
+                            <input type="text" id="cert-mother" name="Mothnamemiddle" class="form-control" placeholder="MOTHER'S MIDDLE NAME">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-mother">Last Mother's Name</label>
+                            <input type="text" id="cert-mother" name="Mothnamelast"class="form-control" placeholder="MOTHER'S LAST NAME">
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <label for="cert-birthplace">Place of Birth</label>
+                            <input type="text" id="cert-birthplace" name="Bplace" class="form-control" placeholder="CITY, PROVINCE">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-birthdate">Date of Birth</label>
+                            <input type="date" id="cert-birthdate" name="Bdate" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-sacrament-date">Date of Sacrament</label>
+                            <input type="date" id="cert-sacrament-date" name="Dsacr" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cert-minister">Minister</label>
+                            <input type="text" id="cert-minister" name="Minister" class="form-control" placeholder="REV. FR. FULL NAME">
+                        </div>
+
+                         <div class="form-group" id="sponsors-group">
+                            <label for="cert-sponsors">Sponsors</label>
+                            <div class="sponsors-container">
+                                <input type="text" class="form-control sponsor-input" name="Sponserfirstn" placeholder="SPONSOR 1 FIRSTNAME">
+                                <input type="text" class="form-control sponsor-input" name="Sponserfirstm" placeholder="SPONSOR 1 MIDDLENAME">
+                                <input type="text" class="form-control sponsor-input" name="Sponserfirstl" placeholder="SPONSOR 1 LASTNAME">
+                                <input type="text" class="form-control sponsor-input" name="Sponsersecondn" placeholder="SPONSOR 2 FIRSTNAME">
+                                <input type="text" class="form-control sponsor-input" name="Sponsersecondm" placeholder="SPONSOR 2 MIDDLENAME">
+                                <input type="text" class="form-control sponsor-input" name="Sponsersecondl" placeholder="SPONSOR 2 LASTNAME">
+                            </div>
+                        </div>
+                                               
+                        <div class="form-group">
+                            <label for="cert-register">Register Information</label>
+                            <input type="text" id="cert-register" class="form-control" name="Bookno" placeholder="Book No.">
+                            <input type="text" id="cert-register" class="form-control" name="Pageno" placeholder="Page No.">
+                            <input type="text" id="cert-register" class="form-control" name="Lineno" placeholder="Line No.">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn register-btn" name="register" id="register-btn-id">
+                                <i class="fas fa-eye"></i> Register
+                            </button>
+                            <button type="button" class="btn generate-btn" id="generate-certificate">
+                                <i class="fas fa-file-pdf"></i> Generate PDF
+                            </button>
+                            <button type="button" class="btn print-btn" id="print-certificate">
+                                <i class="fas fa-print"></i> Print Certificate
+                            </button>
+    </form>
+                        </div>
             </section>
 
             <section id="settings" class="content-section">

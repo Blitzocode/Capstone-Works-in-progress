@@ -1,6 +1,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     // Initialize the admin dashboard
-    startStatusPolling(5000)
+    // startStatusPolling(5000)
 
     initAdminDashboard()
 
@@ -24,6 +24,9 @@
 
     // Load and display transactions
     loadTransactions()
+
+    //load and display Walkin
+    loadwalkin()
   })
 
   // Global variables
@@ -34,7 +37,7 @@
   const currentDate = new Date()
   let selectedDate = new Date()
   let selectedEventId = null
-
+  let records = []
   // Image assets for certificate generation
   let imageAssets = {
     parishLogo:
@@ -163,13 +166,8 @@
   }
 
   function loadTransactions() {
-    // Load transactions from localStorage
-    const storedTransactions = localStorage.getItem("adminTransactions")
-    if (storedTransactions) {
-      allTransactions = JSON.parse(storedTransactions)
-    } else {
-      allTransactions = []
-    }
+    
+    fetchtransaction()
 
     // Populate transactions table
     populateTransactionsTable()
@@ -248,8 +246,8 @@
       })
 
       row.innerHTML = `
-        <td class="transaction-id">${transaction.transactionId}</td>
-        <td>${transaction.referenceNumber}</td>
+        <td class="transaction-id">${transaction.paymentID}</td>
+        <td>${transaction.paymentRef}</td>
         <td>
           <div class="date-time">
             <div class="date">${formattedDate}</div>
@@ -258,31 +256,30 @@
         </td>
         <td>
           <div class="customer-info">
-            <div class="name">${transaction.customerName}</div>
-            <div class="contact">${transaction.customerEmail}</div>
+            <div class="name">${transaction.lastName}</div>
           </div>
         </td>
-        <td>${transaction.certificateType === "KUMPIL" ? "Confirmation" : "Baptismal"}</td>
+        <td>${transaction.documentType === "KUMPIL" ? "Confirmation" : "Baptismal"}</td>
         <td>
           <div class="payment-method">
             <i class="fas fa-${getPaymentMethodIcon(transaction.paymentMethod)}"></i>
             ${transaction.paymentMethod}
           </div>
         </td>
-        <td class="amount">₱${transaction.totalAmount.toFixed(2)}</td>
+        <td class="amount">₱${parseFloat(transaction.amount).toFixed(2)}</td>
         <td><span class="status-badge status-${transaction.status.toLowerCase()}">${transaction.status}</span></td>
         <td>
           <div class="action-buttons">
-            <button class="action-btn view-btn" onclick="viewTransactionDetails('${transaction.transactionId}')" title="View Details">
+            <button class="action-btn view-btn" onclick="viewTransactionDetails('${transaction.paymentID}')" title="View Details">
               <i class="fas fa-eye"></i>
             </button>
-            <button class="action-btn print-btn" onclick="printTransactionReceipt('${transaction.transactionId}')" title="Print Receipt">
+            <button class="action-btn print-btn" onclick="printTransactionReceipt('${transaction.paymentID}')" title="Print Receipt">
               <i class="fas fa-print"></i>
             </button>
             ${
               transaction.status === "COMPLETED"
                 ? `
-              <button class="action-btn refund-btn" onclick="processRefund('${transaction.transactionId}')" title="Process Refund">
+              <button class="action-btn refund-btn" onclick="processRefund('${transaction.paymentID}')" title="Process Refund">
                 <i class="fas fa-undo"></i>
               </button>
             `
@@ -907,15 +904,20 @@
   }
 
   // Continue with remaining functions...
-  function loadActualData() {
+  function requestLoad() {
+    loadActualData()
+  }
+  async function loadActualData() {
     // Load requests from localStorage
-    const storedRequests = localStorage.getItem("adminRequests")
+    // const storedRequests = localStorage.getItem("adminRequests")
+    const data = await fetch('../php_file/requestTable.php')
+    const storedRequests = await data.json()
     if (storedRequests) {
-      allRequests = JSON.parse(storedRequests)
+      allRequests = storedRequests
+      console.log(storedRequests)
     } else {
       allRequests = []
     }
-
     // Load calendar events
     const storedEvents = localStorage.getItem("calendarEvents")
     if (storedEvents) {
@@ -923,7 +925,6 @@
     } else {
       calendarEvents = []
     }
-
     // Check for new form submissions
     checkForNewSubmissions()
 
@@ -1058,9 +1059,7 @@
 
   function populateAllTables() {
     populateTable("all-requests-table", allRequests, "all")
-    populateTable("all-requests-table2", allRequests, "all")
   }
-
   function populateTable(tableId, requests, tableType) {
     const tableBody = document.getElementById(tableId)
     if (!tableBody) return
@@ -1080,20 +1079,20 @@
 
       if (tableType === "all") {
         row.innerHTML = `
-          <td>${request.refNumber}</td>
-          <td>${formatDate(request.dateRequested)}</td>
-          <td>${request.name}</td>
-          <td>${request.certificateType}</td>
-          <td>${request.purpose}</td>
-          <td><span class="status-badge status-${request.status}">${request.status.toUpperCase()}</span></td>
-          <td class="transaction-id">${request.transactionId || "-"}</td>
+          <td>${request.requestID}</td>
+          <td>${formatDate(request.requestDate)}</td>
+          <td>${request.firstName}</td>
+          <td>${request.documentType}</td>
+          <td>${request.purposeOfRequest}</td>
+          <td><span class="status-badge status-${request.requestStatus}">${request.requestStatus.toUpperCase()}</span></td>
+          <td class="transaction-id">${request.paymentRef || "-"}</td>
           <td>
             <div class="action-buttons">
               <button class="action-btn view-btn" onclick="viewRequestDetails('${request.refNumber}')" title="View Details">
                 <i class="fas fa-eye"></i>
               </button>
               ${
-                request.status === "pending"
+                request.requestStatus === "pending"
                   ? `
                 <button class="action-btn approve-btn" onclick="window.approveRequest('${request.refNumber}')" title="Approve">
                   <i class="fas fa-check"></i>
@@ -1105,7 +1104,7 @@
                   : ""
               }
               ${
-                request.status === "approved" || request.status === "paid"
+                request.requestStatus === "approved" || request.requestStatus === "paid"
                   ? `
                 <button class="action-btn print-btn" onclick="window.generateCertificateFromRequest('${request.refNumber}')" title="Generate Certificate">
                   <i class="fas fa-certificate"></i>
@@ -1114,7 +1113,7 @@
                   : ""
               }
               ${
-                request.status === "completed"
+                request.requestStatus === "completed"
                   ? `
                 <button class="action-btn print-btn" onclick="printCertificate('${request.refNumber}')" title="Print Certificate">
                   <i class="fas fa-print"></i>
@@ -1123,9 +1122,9 @@
                   : ""
               }
               ${
-                request.transactionId
+                request.paymentID
                   ? `
-                <button class="action-btn transaction-btn" onclick="viewTransactionDetails('${request.transactionId}')" title="View Transaction">
+                <button class="action-btn transaction-btn" onclick="viewTransactionDetails('${request.paymentID}')" title="View Transaction">
                   <i class="fas fa-receipt"></i>
                 </button>
               `
@@ -2474,6 +2473,61 @@ function startStatusPolling(interval) {
             setTimeout(checkStatus, interval);
         }
     }
-
     checkStatus(); // Start polling
+
+}
+function loadwalkin(){
+  fetchwalkin()
+}
+async function fetchwalkin(){
+  const data = await fetch('../php_file/listWalkIn.php')
+  const record = await data.json()
+  records = record
+  populatewalkin()
+}
+function populatewalkin() {
+    populatewalkinTable("all-recordstable", records, "all")
+  }
+  function populatewalkinTable(tableId, requests, tableType) {
+    const tableBody = document.getElementById(tableId)
+    if (!tableBody) return
+    tableBody.innerHTML = ""
+
+    if (requests.length === 0) {
+      const colspan = tableType === "all" ? "8" : "7"
+      const row = document.createElement("tr")
+      row.innerHTML = `<td colspan="${colspan}" style="text-align: center; padding: 2rem; color: #666;">No requests found</td>`
+      tableBody.appendChild(row)
+      return
+    }
+
+    requests.forEach((request) => {
+      const row = document.createElement("tr")
+
+      if (tableType === "all") {
+        row.innerHTML = `
+          <td>${request.recordID}</td>
+          <td>${request.firstName}</td>
+          <td>${request.lastName}</td>
+          <td>${formatDate(request.birthDate)}</td>
+          <td>${request.placeOfBirth}</td>
+          <td>${formatDate(request.confirmationORbaptismDate)}</td>
+          <td>${request.placeOfBaptismORconfirmation}</td>
+          <td>${request.ministerFullName}</td>
+          <td> <div class="file-actions">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn print-btn"><i class="fas fa-download"></i></button>
+                            </div> </td>
+        `
+      }
+
+      tableBody.appendChild(row)
+    }
+  
+  )
+  }
+async function fetchtransaction(){
+  const data = await fetch('../php_file/listTransaction.php')
+  const transaction = await data.json()
+  allTransactions = transaction
 }
