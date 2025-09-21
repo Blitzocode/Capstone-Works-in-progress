@@ -1077,6 +1077,8 @@
     requests.forEach((request) => {
       const row = document.createElement("tr")
 
+      row.id = `row-${request.requestID}`
+
       if (tableType === "all") {
         row.innerHTML = `
           <td>${request.requestID}</td>
@@ -1094,11 +1096,11 @@
               ${
                 request.requestStatus === "pending"
                   ? `
-                <button class="action-btn approve-btn" onclick="window.approveRequest('${request.refNumber}')" title="Approve">
+                <button class="action-btn approve-btn" onclick="window.approveRequest(${request.requestID})" title="Approve">
                   <i class="fas fa-check"></i>
                 </button>
-                <button class="action-btn reject-btn" onclick="window.rejectRequest('${request.refNumber}')" title="Reject">
-                  <i class="fas fa-times"></i>
+                <button class="action-btn reject-btn" onclick="window.wrongRequest(${request.requestID})" title="Reject">
+                <i class="fas fa-times"></i>
                 </button>
               `
                   : ""
@@ -2246,6 +2248,7 @@
         // Refresh tables and stats
         populateAllTables()
         updateDashboardStats()
+        wrongRequest(refNumber)
 
         showNotification("Request rejected successfully!", "warning")
       }
@@ -2504,6 +2507,10 @@ function populatewalkin() {
     requests.forEach((request) => {
       const row = document.createElement("tr")
 
+      
+      // assign a unique ID to the row
+      row.id = `row-${request.recordID}`
+
       if (tableType === "all") {
         row.innerHTML = `
           <td>${request.recordID}</td>
@@ -2514,18 +2521,86 @@ function populatewalkin() {
           <td>${formatDate(request.confirmationORbaptismDate)}</td>
           <td>${request.placeOfBaptismORconfirmation}</td>
           <td>${request.ministerFullName}</td>
-          <td> <div class="file-actions">
-                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
-                                <button class="action-btn print-btn"><i class="fas fa-download"></i></button>
+          <td> <div class="action-buttons">
+                <button class="action-btn view-btn"><i class="fas fa-download"></i></button>
+
+                <button class="action-btn approve-btn" onclick="window.approveRequest(row-${request.recordID})" title="Approve">
+                  <i class="fas fa-check"></i>
+                </button>
+
+                <button class="action-btn reject-btn" onclick="window.wrongWalkin(${request.recordID})" title="Reject">
+                  <i class="fas fa-times"></i>
+                </button>
                             </div> </td>
         `
       }
 
       tableBody.appendChild(row)
     }
-  
   )
   }
+  function walkinRejects(recordID) {
+  const row = document.getElementById(`row-${recordID}`);
+  if (row) {
+    row.remove();
+  } else {
+    alert("System Error, please try again later.");
+  }
+  }
+  window.wrongWalkin=(recordID)=> {
+  if (confirm(`Are you sure you want to reject request ${recordID}?`)) {
+    let request = null;
+    for (let i = 0; i < records.length; i++)
+      {
+          if (records[i].recordID == recordID){
+            request = allRequests[i]
+            console.log(request)
+            break
+          }
+      }
+      if (request) {
+        request.status = "rejected"
+
+        // Refresh tables and stats
+        // populateAllTables()
+        // updateDashboardStats()
+        walkinRejects(recordID)
+
+        showNotification("Request rejected successfully!", "warning")
+      }
+    }
+}
+  function requestRejects(requestID) {
+  const row = document.getElementById(`row-${requestID}`);
+  if (row) {
+    row.remove();
+  } else {
+    alert("System Error, please try again later.");
+  }
+  }
+  window.wrongRequest=(requestID)=> {
+  if (confirm(`Are you sure you want to reject request ${requestID}?`)) {
+    let request = null;
+    for (let i = 0; i < allRequests.length; i++)
+      {
+          if (allRequests[i].requestID == requestID){
+            request = allRequests[i]
+            console.log(request)
+            break
+          }
+      }
+      if (request) {
+        request.status = "rejected"
+
+        // Refresh tables and stats
+        // populateAllTables()
+        // updateDashboardStats()
+        requestRejects(requestID)
+
+        showNotification("Request rejected successfully!", "warning")
+      }
+    }
+}
 async function fetchtransaction(){
   const data = await fetch('../php_file/listTransaction.php')
   const transaction = await data.json()
